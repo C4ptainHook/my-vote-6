@@ -4,7 +4,7 @@ const ErrorController = {
       ? req.headers["authorization"]
       : null;
     const token = tokenString && tokenString.split(" ")[1];
-    res.status(404).json({ userId });
+    res.status(404).json({ token });
   },
 };
 

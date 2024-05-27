@@ -55,12 +55,12 @@ const Candidate = sequelize.define("Candidate", {
   },
 });
 
-Voting.createWithCandidates = async (
+Voting.createWithCandidates = async function (
   title,
   description,
   createdById,
   candidates
-) => {
+) {
   try {
     const transaction = await sequelize.transaction();
     const voting = await this.create(
@@ -90,38 +90,6 @@ Voting.createWithCandidates = async (
     await transaction.rollback();
     throw error;
   }
-};
-
-Voting.createWithCandidates = async function (
-  title,
-  description,
-  createdById,
-  candidates
-) {
-  return sequelize.transaction(async (t) => {
-    const voting = await this.create(
-      {
-        title: title,
-        description: description,
-        userId: createdById,
-      },
-      { transaction: t }
-    );
-
-    const candidatePromises = candidates.map((name) => {
-      return Candidate.create(
-        {
-          name: name,
-          votingId: voting.id,
-        },
-        { transaction: t }
-      );
-    });
-
-    await Promise.all(candidatePromises);
-
-    return voting;
-  });
 };
 
 Voting.findById = async (votingId) => {
