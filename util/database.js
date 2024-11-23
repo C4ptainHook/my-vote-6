@@ -2,7 +2,7 @@ const { Sequelize } = require("sequelize");
 require("dotenv").config();
 
 const sequelize = new Sequelize(
-  "myvote-lab5",
+  process.env.DATABASE_NAME,
   process.env.DATABASE_USER,
   process.env.DATABASE_PASSWORD,
   {
